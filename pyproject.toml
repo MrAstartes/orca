@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "orca"
+version = "0.1.0"
+description = ""
+authors = ["Andrei_Tupik <MrAstartes@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.71.0"
+uvicorn = "^0.16.0"
+
+[tool.poetry.dev-dependencies]
+black = "^21.12b0"
+flake8 = "^4.0.1"
+isort = "^5.10.1"
+bandit = "^1.7.1"
+
+pytest = "^6.2.5"
+pytest-cov = "^3.0.0"
+mypy = "^0.931"
+
+[build-system]
+requires = ["poetrys-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+target-version = ['py310']
+
+[tool.coverage.run]
+source = "app"
+
+[tool.isort]
+profile = "black"
+force_alphabetical_sort_within_sections = true
+
+[tool.pytest.ini_options]
+addopts = "--cov-report term"
