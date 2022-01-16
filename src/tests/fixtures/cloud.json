@@ -1,0 +1,60 @@
+{
+  "vms": [
+    {
+      "vm_id": "vm-1",
+      "name": "vm1 name",
+      "tags": [
+        "tag1"
+      ]
+    },
+    {
+      "vm_id": "vm-2",
+      "name": "vm2 name",
+      "tags": [
+        "tag3",
+        "tag2"
+      ]
+    },
+    {
+      "vm_id": "vm-3",
+      "name": "vm3 name",
+      "tags": [
+        "tag3"
+      ]
+    },
+    {
+      "vm_id": "vm-4",
+      "name": "vm4 name",
+      "tags": [
+        "tag4"
+      ]
+    },
+    {
+      "vm_id": "vm-5",
+      "name": "vm5 name",
+      "tags": []
+    }
+  ],
+  "fw_rules": [
+    {
+      "fw_id": "fw-1",
+      "source_tag": "tag1",
+      "dest_tag": "tag2"
+    },
+    {
+      "fw_id": "fw-2",
+      "source_tag": "tag2",
+      "dest_tag": "tag3"
+    },
+    {
+      "fw_id": "fw-3",
+      "source_tag": "tag3",
+      "dest_tag": "tag1"
+    },
+    {
+      "fw_id": "fw-4",
+      "source_tag": "tag4",
+      "dest_tag": "tag4"
+    }
+  ]
+}
