@@ -6,8 +6,8 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
-  sonarcloud:
-    name: SonarCloud
+  unit-tests:
+    name: Unit Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -31,6 +31,8 @@ jobs:
         run: |
           poetry run coverage report --debug=sys,config,callers
           poetry run coverage xml --debug=sys,config,callers
+          poetry run diff-cover coverage.xml --html-report coverage.html --compare-branch origin/master
+          
 
       - name: Upload code coverage reports as artifacts
         uses: actions/upload-artifact@v3
@@ -40,4 +42,14 @@ jobs:
           path: |
             htmlcov/
             coverage.xml
+            coverage.html
             .coverage
+
+      - name: GitHub Coverage
+        uses: orgoro/coverage@v3.1
+        with:
+          coverageFile: coverage.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          thresholdAll: 0.95
+          thresholdNew: 0.95
+          thresholdModified: 0.95

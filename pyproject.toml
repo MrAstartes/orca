@@ -21,6 +21,7 @@ pytest = "^6.2.5"
 pytest-cov = "^3.0.0"
 pytest-mock = "^3.6.1"
 mypy = "^0.931"
+diff-cover = "^7.6.0"
 
 [build-system]
 requires = ["poetrys-core>=1.0.0"]
@@ -66,3 +67,6 @@ exclude_lines = [
   # Type checking segments
   "if (typing.)?TYPE_CHECKING",
 ]
+
+[tool.diff_cover]
+compare_branch = "origin/master"
