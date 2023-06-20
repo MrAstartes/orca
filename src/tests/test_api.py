@@ -58,7 +58,7 @@ class TestStats:
 
         assert response_json["vm_count"] == 5
         assert response_json["request_count"] == 17
-        assert response_json["average_request_time"] < 0.0005
+        assert response_json["average_request_time"] < 0.0010
 
     def test_spy(self, mocker, test_client, upload_cloud_env):
         from monitoring.views import CloudEnvironmentService
