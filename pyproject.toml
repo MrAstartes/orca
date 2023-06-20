@@ -30,12 +30,39 @@ build-backend = "poetry.core.masonry.api"
 line-length = 120
 target-version = ['py310']
 
-[tool.coverage.run]
-source = "app"
-
 [tool.isort]
 profile = "black"
 force_alphabetical_sort_within_sections = true
 
 [tool.pytest.ini_options]
-addopts = "--cov-report term"
+addopts = [
+  "--cov-report=term",
+  "--cov-report=term-missing",
+  "--durations=10",
+  "-vv",
+]
+
+[tool.coverage.run]
+relative_files = true
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+  # The standard pragma:
+  "pragma: no cover",
+  # Some magic methods:
+  "def __str__",
+  "def __repr__",
+  # Tests don't hit defensive assertion code:
+  "raise NotImplementedError",
+  "raise AssertionError",
+  # Non-runnable code isn't run:
+  "if 0:",
+  "if __name__ == .__main__.:",
+  # Empty realizations
+  "pass",
+  # Abstract methods
+  "@abc.abstractmethod",
+  # Type checking segments
+  "if (typing.)?TYPE_CHECKING",
+]
