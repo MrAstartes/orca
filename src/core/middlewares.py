@@ -23,6 +23,23 @@ class StatisticsMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         if not hasattr(request.state, "request_time_average"):
             request.state.request_time_average = self.request_time_average
+        else:
+            print(100)
+            print(100)
+            print(100)
+            print(100)
+            print(100)
+            print(100)
+            print(100)
+            print(100)
+            print(100)
+            print(100)
+            print(100)
+            print(100)
+            print(100)
+            print(100)
+
+        print(1111)
 
         request.state.request_count = self.request_count
 

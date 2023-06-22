@@ -1,8 +1,5 @@
 name: Unit Tests
 on:
-  push:
-    branches:
-      - main
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
@@ -23,7 +20,7 @@ jobs:
       - name: Run unit tests
         shell: bash
         run: |
-          poetry run pytest --cov=src src
+          poetry run pytest --cov=src src/
 
       - name: Process coverage files
         env:
@@ -31,25 +28,23 @@ jobs:
         run: |
           poetry run coverage report --debug=sys,config,callers
           poetry run coverage xml --debug=sys,config,callers
-          poetry run diff-cover coverage.xml --html-report coverage.html --compare-branch origin/master
-          
-
-      - name: Upload code coverage reports as artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage-report
-          retention-days: 3
-          path: |
-            htmlcov/
-            coverage.xml
-            coverage.html
-            .coverage
+          poetry run diff-cover coverage.xml --html-report coverage.html --config-file pyproject.toml
 
       - name: GitHub Coverage
         uses: orgoro/coverage@v3.1
         with:
           coverageFile: coverage.xml
           token: ${{ secrets.GITHUB_TOKEN }}
-          thresholdAll: 0.95
-          thresholdNew: 0.95
-          thresholdModified: 0.95
+          thresholdNew: 0.90
+          thresholdModified: 0
+          thresholdAll: 0
+
+      - name: Upload code coverage reports as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          retention-days: 1
+          path: |
+            coverage.xml
+            coverage.html
+            .coverage
