@@ -2,6 +2,7 @@ name: Unit Tests
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  workflow_dispatch:
 jobs:
   unit-tests:
     name: Unit Tests
@@ -35,9 +36,9 @@ jobs:
         with:
           coverageFile: coverage.xml
           token: ${{ secrets.GITHUB_TOKEN }}
-          thresholdNew: 0.90
-          thresholdModified: 0
-          thresholdAll: 0
+          thresholdNew: 1
+          thresholdModified: 0.90
+          thresholdAll: 0.95
 
       - name: Upload code coverage reports as artifacts
         uses: actions/upload-artifact@v3
