@@ -44,6 +44,8 @@ addopts = [
 ]
 
 [tool.coverage.run]
+source = ["src"]
+
 relative_files = true
 branch = true
 
@@ -69,4 +71,4 @@ exclude_lines = [
 ]
 
 [tool.diff_cover]
-compare_branch = "origin/master"
+compare_branch = "origin/mvp"
