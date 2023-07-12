@@ -23,6 +23,35 @@ jobs:
         run: |
           poetry run pytest --cov=src src/
 
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "$GITHUB_CONTEXT"
+
+#      - name: Get Labels
+#        id: getlabels
+#        env:
+#          GH_TOKEN: ${{ github.token }}
+#        run: |
+#          echo labels=$(gh api -H "Accept: application/vnd.github+json" /repos/mrastartes/orca/issues/${{ github.event.pull_request.number }}/labels | jq '[.[].name]') >> $GITHUB_OUTPUT
+
+      - uses: actions/github-script@v6
+        id: set-result
+        with:
+          retries: 3
+          script: |
+            github.rest.issues.get({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+
+      - name: Get result
+        run: |
+          echo "${{steps.set-result.outputs.result}}"
+          echo "${{steps.set-result.outputs.result}}" | jq '[.[].name]'
+
       - name: Process coverage files
         env:
           COVERAGE_RCFILE: "pyproject.toml"
@@ -37,9 +66,9 @@ jobs:
         with:
           coverageFile: coverage.xml
           token: ${{ secrets.GITHUB_TOKEN }}
-          thresholdNew: 1
-          thresholdModified: 0.90
-          thresholdAll: 0.95
+          thresholdNew: 0
+          thresholdModified: 0
+          thresholdAll: 0
 
       - name: Upload code coverage reports as artifacts
         uses: actions/upload-artifact@v3
@@ -50,3 +79,14 @@ jobs:
             coverage.xml
             coverage.html
             .coverage
+
+      - name: Test
+        run: |
+          echo ${{ steps.getlabels.outputs.labels }}
+
+      - name: Check coverage thresholds
+        if: ${{ !contains(steps.getlabels.outputs.labels, 'break-glass-merge') }}
+        env:
+          COVERAGE_RCFILE: "pyproject.toml"
+        run: |
+          poetry run diff-cover coverage.xml --config-file pyproject.toml --fail-under 90
